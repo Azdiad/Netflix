@@ -20,7 +20,7 @@ class _BottomBarState extends State<BottomBar> {
     newhits(),
     fastlaugh(),
     searchpage(),
-    downloads()
+    Downloads()
   ];
   int _currentIndex = 0;
   @override

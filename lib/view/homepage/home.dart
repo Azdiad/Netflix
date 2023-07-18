@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/constants/constat.dart';
 import 'package:netflix/helpers/textstyle.dart';
+import 'package:netflix/key/apikey.dart';
 import 'package:netflix/view/homepage/widgets/maincard.dart';
 import 'package:netflix/view/homepage/widgets/numCard.dart';
 import 'package:netflix/widgets/title.dart';
+import 'package:tmdb_api/tmdb_api.dart';
 
 class homepage extends StatefulWidget {
   const homepage({super.key});
@@ -13,6 +15,36 @@ class homepage extends StatefulWidget {
 }
 
 class _homepageState extends State<homepage> {
+  List trendingmovies = [];
+  List popularmovies = [];
+  List tv = [];
+  List nowplayings = [];
+  @override
+  void initState() {
+    loadmovies();
+    super.initState();
+  }
+
+  loadmovies() async {
+    TMDB tmdbcustomlogs = TMDB(ApiKeys(apikey, readaccestoken),
+        logConfig: ConfigLogger(
+          showLogs: true,
+          showErrorLogs: true,
+        ));
+    Map trendingresult = await tmdbcustomlogs.v3.trending.getTrending();
+    Map nowplaying = await tmdbcustomlogs.v3.movies.getNowPlaying();
+    Map popularresult = await tmdbcustomlogs.v3.movies.getTopRated();
+    Map tvresult = await tmdbcustomlogs.v3.tv.getPopular();
+
+    setState(() {
+      trendingmovies = trendingresult['results'];
+      popularmovies = popularresult['results'];
+      tv = tvresult['results'];
+      nowplayings = nowplaying['results'];
+    });
+    print(trendingmovies);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,7 +181,23 @@ class _homepageState extends State<homepage> {
               maxHeight: 200,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: List.generate(10, (index) => const maincard()),
+                children: List.generate(
+                    10,
+                    (index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Container(
+                            height: 250,
+                            width: 150,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://image.tmdb.org/t/p/w300' +
+                                            trendingmovies[index]
+                                                ['poster_path']),
+                                    fit: BoxFit.cover),
+                                borderRadius: cardRadius20),
+                          ),
+                        )),
               ),
             ),
             sheight,
@@ -165,7 +213,22 @@ class _homepageState extends State<homepage> {
               maxHeight: 200,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: List.generate(10, (index) => const maincard()),
+                children: List.generate(
+                    10,
+                    (index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Container(
+                            height: 250,
+                            width: 150,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://image.tmdb.org/t/p/w300' +
+                                            nowplayings[index]['poster_path']),
+                                    fit: BoxFit.cover),
+                                borderRadius: cardRadius20),
+                          ),
+                        )),
               ),
             ),
             sheight,
@@ -193,7 +256,7 @@ class _homepageState extends State<homepage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 swidth,
-                titleof(title: 'Tense Darama'),
+                titleof(title: 'Popular'),
               ],
             ),
             sheight,
@@ -201,7 +264,23 @@ class _homepageState extends State<homepage> {
               maxHeight: 200,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: List.generate(10, (index) => const maincard()),
+                children: List.generate(
+                    10,
+                    (index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Container(
+                            height: 250,
+                            width: 150,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://image.tmdb.org/t/p/w300' +
+                                            trendingmovies[index]
+                                                ['poster_path']),
+                                    fit: BoxFit.cover),
+                                borderRadius: cardRadius20),
+                          ),
+                        )),
               ),
             ),
             sheight,
@@ -209,7 +288,7 @@ class _homepageState extends State<homepage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 swidth,
-                titleof(title: 'South Indian Cinema'),
+                titleof(title: 'Popular Cinema'),
               ],
             ),
             sheight,
@@ -217,9 +296,25 @@ class _homepageState extends State<homepage> {
               maxHeight: 200,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: List.generate(10, (index) => const maincard()),
+                children: List.generate(
+                    10,
+                    (index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Container(
+                            height: 250,
+                            width: 150,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://image.tmdb.org/t/p/w300' +
+                                            popularmovies[index]
+                                                ['poster_path']),
+                                    fit: BoxFit.cover),
+                                borderRadius: cardRadius20),
+                          ),
+                        )),
               ),
-            )
+            ),
           ],
         ),
       ),
