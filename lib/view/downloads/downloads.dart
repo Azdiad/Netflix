@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:netflix/constants/constat.dart';
 import 'package:netflix/helpers/textstyle.dart';
 import 'package:netflix/key/apikey.dart';
 import 'package:netflix/widgets/appbarwidget.dart';
@@ -40,6 +39,18 @@ class _DownloadsState extends State<Downloads> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+
+    if (nowplayings.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (nowplayings.isEmpty || nowplayings.length < 1) {
+      return const Center(
+        child: Text('No  movies available.'),
+      );
+    }
 
     final List<NetworkImage> imagesList = [
       NetworkImage(

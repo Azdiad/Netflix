@@ -12,18 +12,25 @@ class netflixclone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'NETFLIX',
-      theme: ThemeData(
-          appBarTheme: AppBarTheme(
-            iconTheme: IconThemeData(color: whitee),
-            color: backgroundcolor,
-          ),
-          colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: Colors.blue, backgroundColor: backgroundcolor),
-          fontFamily: GoogleFonts.montserrat().fontFamily),
-      home: BottomBar(),
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (OverscrollIndicatorNotification overscroll) {
+        overscroll.disallowIndicator();
+
+        return true;
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'NETFLIX',
+        theme: ThemeData(
+            appBarTheme: AppBarTheme(
+              iconTheme: IconThemeData(color: whitee),
+              color: backgroundcolor,
+            ),
+            colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Colors.blue, backgroundColor: backgroundcolor),
+            fontFamily: GoogleFonts.montserrat().fontFamily),
+        home: BottomBar(),
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix/constants/constat.dart';
 import 'package:netflix/helpers/textstyle.dart';
@@ -47,6 +48,27 @@ class _homepageState extends State<homepage> {
 
   @override
   Widget build(BuildContext context) {
+    if (trendingmovies.isEmpty ||
+        popularmovies.isEmpty ||
+        tv.isEmpty ||
+        nowplayings.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (trendingmovies.isEmpty ||
+        popularmovies.isEmpty ||
+        tv.isEmpty ||
+        nowplayings.isEmpty ||
+        trendingmovies.length < 0 ||
+        popularmovies.length < 0 ||
+        tv.length < 0 ||
+        nowplayings.length < 0) {
+      return const Center(
+        child: Text('Movies Not available.'),
+      );
+    }
     return Scaffold(
       backgroundColor: backgroundcolor,
       body: SingleChildScrollView(
@@ -246,8 +268,43 @@ class _homepageState extends State<homepage> {
                 scrollDirection: Axis.horizontal,
                 children: List.generate(
                     10,
-                    (index) => numcard(
-                          index: index,
+                    (index) => Stack(
+                          children: [
+                            Row(
+                              children: [
+                                const SizedBox(height: 200, width: 50),
+                                Container(
+                                  height: 200,
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              'https://image.tmdb.org/t/p/w300' +
+                                                  popularmovies[index]
+                                                      ['poster_path']),
+                                          fit: BoxFit.cover),
+                                      borderRadius: cardRadius20),
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              left: 8,
+                              bottom: -20,
+                              child: BorderedText(
+                                strokeColor: whitee,
+                                strokeWidth: 5,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: TextStyle(
+                                      fontSize: 140,
+                                      decoration: TextDecoration.none,
+                                      decorationColor: whitee,
+                                      color: backgroundcolor,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                              ),
+                            )
+                          ],
                         )),
               ),
             ),

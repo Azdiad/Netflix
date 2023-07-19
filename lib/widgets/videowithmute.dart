@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/helpers/textstyle.dart';
 
-class videowithmuteicon extends StatelessWidget {
-  const videowithmuteicon({
-    super.key,
-  });
+class videowithmuteicon extends StatefulWidget {
+  final upcoming;
+  videowithmuteicon({super.key, this.upcoming, required this.index});
+  final int index;
 
+  @override
+  State<videowithmuteicon> createState() => _videowithmuteiconState();
+}
+
+class _videowithmuteiconState extends State<videowithmuteicon> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -14,7 +19,8 @@ class videowithmuteicon extends StatelessWidget {
           width: double.infinity,
           height: 200,
           child: Image.network(
-              "https://static-koimoi.akamaized.net/wp-content/new-galleries/2016/01/rocky-handsome-movie-poster0001.jpg",
+              'https://image.tmdb.org/t/p/w300' +
+                  widget.upcoming[0]['poster_path'],
               fit: BoxFit.cover),
         ),
         Positioned(

@@ -1,19 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/constants/constat.dart';
 import 'package:netflix/helpers/textstyle.dart';
+import 'package:netflix/key/apikey.dart';
 import 'package:netflix/view/fastLaugh/righticons.dart';
+import 'package:tmdb_api/tmdb_api.dart';
 
-class videolist extends StatelessWidget {
+class videolist extends StatefulWidget {
   final int index;
 
   const videolist({super.key, required this.index});
 
   @override
+  State<videolist> createState() => _videolistState();
+}
+
+class _videolistState extends State<videolist> {
+  List nowplayings = [];
+  @override
+  void initState() {
+    super.initState();
+    loadmovies();
+  }
+
+  Future<void> loadmovies() async {
+    TMDB tmdbcustomlogs = TMDB(ApiKeys(apikey, readaccestoken),
+        logConfig: ConfigLogger(
+          showLogs: true,
+          showErrorLogs: true,
+        ));
+
+    Map nowplaying = await tmdbcustomlogs.v3.movies.getNowPlaying();
+
+    setState(() {
+      nowplayings = nowplaying['results'];
+    });
+    print(nowplaying);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (nowplayings.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (nowplayings.isEmpty || nowplayings.length < 1) {
+      return const Center(
+        child: Text('No  movies available.'),
+      );
+    }
+
     return Stack(
       children: [
         Container(
-          color: Colors.accents[index % Colors.accents.length],
+          height: MediaQuery.of(context).size.height,
+          child: Image.network(
+            'https://image.tmdb.org/t/p/w300' +
+                nowplayings[widget.index]['poster_path'],
+            fit: BoxFit.cover,
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(10),
@@ -41,7 +87,6 @@ class videolist extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Left side mute icon
                 CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.black.withOpacity(0.5),

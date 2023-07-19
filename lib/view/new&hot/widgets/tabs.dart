@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:netflix/view/new&hot/widgets/comingsoon.dart';
 import 'package:netflix/view/new&hot/widgets/everyones.dart';
 
-Widget buildcomingsoon() {
+Widget buildComingSoon() {
   return ListView.builder(
     itemCount: 10,
-    itemBuilder: (context, index) => const ComingSoonWidget(),
+    itemBuilder: (context, index) => ComingSoonWidget(index: index),
   );
 }
 
-buildeveryones() {
+Widget buildEveryones() {
   return ListView.builder(
     itemCount: 10,
-    itemBuilder: (context, index) => const everyoneswatchingwidget(),
+    itemBuilder: (context, index) => everyoneswatchingwidget(index: index),
   );
 }

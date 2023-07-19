@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:netflix/constants/constat.dart';
 import 'package:netflix/helpers/textstyle.dart';
 import 'package:netflix/view/new&hot/widgets/tabs.dart';
-import 'package:netflix/widgets/appbarwidget.dart';
 
 class newhits extends StatefulWidget {
   const newhits({super.key});
@@ -62,7 +61,7 @@ class _newhitsState extends State<newhits> {
                   ]),
             ),
           ),
-          body: TabBarView(children: [buildcomingsoon(), buildeveryones()])),
+          body: TabBarView(children: [buildComingSoon(), buildEveryones()])),
     );
   }
 }
